@@ -1,0 +1,28 @@
+---
+
+plugins:
+  - react
+  - react-hooks
+
+env:
+  browser: true
+  es2021: true
+
+parserOptions:
+  ecmaVersion: 2021
+
+parser: babel-eslint
+
+extends:
+  - "airbnb"
+  - "plugin:react/recommended"
+
+rules:
+  quotes:
+    - error
+    - "single"
+  no-console: 0
+  react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
+  react-hooks/rules-of-hooks: "error"
+  react-hooks/exhaustive-deps: "warn"
+  no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
