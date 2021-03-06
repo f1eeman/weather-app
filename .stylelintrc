@@ -9,7 +9,15 @@
     "stylelint-config-rational-order/plugin"
   ],
   "rules": {
+    "number-leading-zero": "always",
     "order/properties-order": [],
+    "at-rule-empty-line-before": ["always", {
+      "except": [
+        "first-nested",
+        "blockless-after-blockless"
+      ],
+      "ignore": ["after-comment"]
+    }],
     "plugin/rational-order": [true, {
       "border-in-box-model": false,
       "empty-line-between-groups": true

@@ -1,0 +1,49 @@
+@mixin init-size-img($max-width: 100%, $height: auto) {
+  max-width: $max-width;
+  height: $height;
+}
+
+@mixin style-text($font-size: 17px, $line-height: 20px, $font-weight: 400) {
+  font-weight: $font-weight;
+  font-size: $font-size;
+  line-height: $line-height;
+}
+
+@mixin list-reset() {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+//Лечит проблему поведения svg элемента, как ссылки, при нажатии
+@mixin ie-bug-fix-svg() {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: block;
+
+    content: "";
+  }
+}
+
+@mixin mobile-view($mobile-width: 320px, $mobile-padding: 0 30px,) {
+  width: $mobile-width;
+  padding: $mobile-padding;
+}
+
+@mixin tablet-view($mobile-width: 768px, $mobile-padding: 0 50px,) {
+  width: $mobile-width;
+  padding: $mobile-padding;
+}
+
+@mixin desktop-view($mobile-width: 1150px, $mobile-padding: 0 50px,) {
+  width: $mobile-width;
+  padding: $mobile-padding;
+}

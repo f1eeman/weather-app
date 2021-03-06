@@ -3,11 +3,41 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta charset="utf-8">
+  <title>Сервис прогноза погоды</title>
 </head>
 <body>
-  <div id="root">
-  </div>
-  <script src="/main.js"></script>
+  <main class="page-main">
+    <h1 class="visually-hidden">Главная страница сервиса прогноза погоды</h1>
+    <section class="page-main__search-city search-city">
+      <h2 class="visually-hidden">Форма поиска города</h2>
+      <div class="container">
+        <form class="search-city__form search-form" action="https://echo.htmlacademy.ru" method="POST">
+          <div class="search-form__wrapper">
+            <div class="search-form__input-wrapper">
+              <label class="search-form__label" for="city-name">Укажите название города</label>
+              <input class="search-form__control" id="city-name" name="city-name" type="text" placeholder="Введите название города..." value="" required>
+            </div>
+            <button class="search-form__button" type="submit">Найти</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <section class="page-main__favorites-cities favorites-cities slider">
+      <h2 class="visually-hidden">Избранные города</h2>
+      <ul class="favorites-cities__list slider__list">
+        <li class="favorites-cities__item slider__item"></li>
+        <li class="favorites-cities__item slider__item"></li>
+        <li class="favorites-cities__item slider__item"></li>
+        <li class="favorites-cities__item slider__item"></li>
+        <li class="favorites-cities__item slider__item"></li>
+      </ul>
+    </section>
+    <section>
+      <h2 class="visually-hidden">Погода в выбранном городе</h2>
+    </section>
+    <div id="root">
+    </div>
+  </main>
 </body>
 </html>
 <!DOCTYPE html>
