@@ -8,7 +8,11 @@ const __dirname = dirname(__filename);
 
 const config = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: [
+    'core-js/modules/es6.promise',
+    'core-js/modules/es6.array.iterator',
+    path.resolve(__dirname, 'src/index.js'),
+  ],
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
@@ -28,6 +32,10 @@ const config = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: ['@babel/plugin-syntax-dynamic-import'],
+          },
         },
       },
       {
@@ -37,6 +45,10 @@ const config = {
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+      {
+        test: /\.woff(2)?$/,
+        type: 'asset/inline',
       },
       {
         test: /\.(png|svg|jpg|jpeg)$/,
