@@ -13,11 +13,14 @@ const config = {
     'core-js/modules/es6.array.iterator',
     path.resolve(__dirname, 'src/index.js'),
   ],
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),
     compress: true,
