@@ -1,11 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './scss/style.scss';
+import runApp from './init.jsx';
 
-const App = () => (
-  <div className="block">
-    <b>Hello world!</b>
-  </div>
-);
-
-ReactDOM.render(<App />, document.getElementById('root'));
+runApp();

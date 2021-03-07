@@ -21,8 +21,15 @@ rules:
   quotes:
     - error
     - "single"
+  import/extensions: 0
   no-console: 0
+  react/prop-types: 0
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
+  jsx-a11y/label-has-associated-control: [ "error", {
+    "required": {
+      "some": [ "nesting", "id"  ]
+    }
+  }]
   react-hooks/rules-of-hooks: "error"
   react-hooks/exhaustive-deps: "warn"
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
