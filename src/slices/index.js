@@ -1,20 +1,24 @@
 import { combineReducers } from 'redux';
-import userInfoReducer, {
+import usersInfoReducer, {
+  addUser,
   setLogin,
   setEmail,
+  setFavoriteCities,
   addCity,
   removeCity,
-} from './userInfo';
+} from './users';
 
 const actions = {
+  addUser,
   setLogin,
   setEmail,
+  setFavoriteCities,
   addCity,
   removeCity,
 };
 
 const rootReducer = combineReducers({
-  userInfo: userInfoReducer,
+  usersInfo: usersInfoReducer,
 });
 
 export { actions };

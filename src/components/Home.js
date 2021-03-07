@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+// import axios from 'axios';
 // import routes from '../../routes.js';
 // import { actions as slicesActions } from '../../slices';
 import FavoriteCities from './FavoriteCities.js';
@@ -11,7 +11,7 @@ import Spinner from './Spinner.js';
 
 const Home = () => {
   // const channels = useSelector((state) => state.channelsInfo.channels);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
@@ -28,18 +28,8 @@ const Home = () => {
         .strict(true),
       // .notOneOf(loginsList, 'Логин уже занят'),
     }),
-    onSubmit: async (values, actions) => {
-      const channelInfo = { name: values.body };
-      const path = routes.channelsPath();
-      try {
-        await axios.post(
-          path, { data: { attributes: channelInfo } },
-        );
-        dispatch(slicesActions.hideModal());
-      } catch (e) {
-        actions.setErrors({ body: t('networkError') });
-        throw e;
-      }
+    onSubmit: (values, actions) => {
+      console.log(values, actions);
     },
   });
 
@@ -60,28 +50,36 @@ const Home = () => {
   return (
     <>
       <Header />
-      <form className="search-city__form search-form" onSubmit={formik.handleSubmit}>
-        <div className="search-form__wrapper">
-          <div className="search-form__input-wrapper">
-            <label className="visually-hidden" htmlFor="city-name">Укажите название города</label>
-            <input
-              ref={inputRef}
-              value={formik.values.body}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              disabled={formik.isSubmitting}
-              className="search-form__control"
-              id="city-name"
-              name="city-name"
-              type="text"
-              placeholder="Введите название города..."
-            />
-            {renderFeedBack()}
+      <main className="page-main">
+        <h1 className="visually-hidden">Главная страница сервиса прогноза погоды</h1>
+        <section className="page-main__search-city search-city">
+          <h2 className="visually-hidden">Форма поиска города</h2>
+          <div className="container">
+            <form className="search-city__form search-form" onSubmit={formik.handleSubmit}>
+              <div className="search-form__wrapper">
+                <div className="search-form__input-wrapper">
+                  <label className="visually-hidden" htmlFor="city-name">Укажите название города</label>
+                  <input
+                    ref={inputRef}
+                    value={formik.values.body}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    disabled={formik.isSubmitting}
+                    className="search-form__control"
+                    id="city-name"
+                    name="city-name"
+                    type="text"
+                    placeholder="Введите название города..."
+                  />
+                  {renderFeedBack()}
+                </div>
+                {renderButton()}
+              </div>
+            </form>
           </div>
-          {renderButton()}
-        </div>
-      </form>
-      <FavoriteCities />
+        </section>
+        <FavoriteCities />
+      </main>
     </>
   );
 };

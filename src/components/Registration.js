@@ -1,15 +1,22 @@
 import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { uniqueId } from 'lodash';
-// import routes from '../../routes.js';
-// import { actions as slicesActions } from '../../slices';
+import { uniqueId, omit } from 'lodash';
 import storage from '../storage.js';
 import Spinner from './Spinner.js';
+import { actions as slicesActions } from '../slices/index.js';
 
 const Registration = () => {
+  const { usersLogins, usersEmails } = useSelector((state) => (
+    {
+      usersLogins: state.usersInfo.users.map(({ login }) => login),
+      usersEmails: state.usersInfo.users.map(({ email }) => email),
+    }
+  ));
   const history = useHistory();
+  const dispatch = useDispatch();
   const loginFieldRef = useRef(null);
   useEffect(() => {
     loginFieldRef.current.focus();
@@ -27,46 +34,40 @@ const Registration = () => {
         .max(8, 'Количество символов должно быть от 3 до 8')
         .required('Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true),
-      // .notOneOf(loginsList, 'Логин уже занят'),
+        .strict(true)
+        .notOneOf(usersLogins, 'Логин уже занят'),
       email: Yup
         .string()
         .email('Введите валидный email')
         .required('Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки'),
+        .trim('Не должно быть пробелов в начале и конце строки')
+        .strict(true)
+        .notOneOf(usersEmails, 'Указанная электронная почта зарегистрирована'),
       password: Yup
         .string()
         .min(8, 'Количество символов должно быть не меньше 8')
         .required('Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки'),
+        .trim('Не должно быть пробелов в начале и конце строки')
+        .strict(true),
     }),
     onSubmit: (values, actions) => {
       const userLogin = { name: values.login };
       const userPassword = { name: values.password };
       const userEmail = { name: values.email };
       const userId = uniqueId();
-      const allUsers = storage.getAllUsers();
-      const isLoginRegistered = allUsers.some(({ login }) => login === userLogin);
-      const isEmailRegistered = allUsers.some(({ email }) => email === userEmail);
-      if (isLoginRegistered) {
-        // Куда записывать ошибки?
-        actions.setErrors({ login: 'Логин занят' });
-        return;
-      }
-      if (isEmailRegistered) {
-        // Куда записывать ошибки?
-        actions.setErrors({ login: 'Данная почта уже используется' });
-        return;
-      }
+      const userInfo = {
+        id: userId,
+        login: userLogin,
+        email: userEmail,
+        password: userPassword,
+        favoriteCities: [],
+      };
       try {
-        storage.addUser({
-          id: userId,
-          login: userLogin,
-          email: userEmail,
-          password: userPassword,
-        });
+        storage.addUser({ ...userInfo });
+        dispatch(slicesActions.addUser({ user: omit(userInfo, 'password') }));
         history.push('/auth');
       } catch (e) {
+        // куда вписывать ошибки
         actions.setErrors({ login: 'Упс, что-то пошло не так! Попробуйте снова.' });
         throw e;
       }

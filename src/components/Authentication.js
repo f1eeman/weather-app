@@ -1,22 +1,25 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useHistory } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
-// import routes from '../../routes.js';
-// import { actions as slicesActions } from '../../slices';
+import storage from '../storage.js';
 import Spinner from './Spinner.js';
+import { actions as slicesActions } from '../slices/index.js';
 
-const Registration = () => {
-  // const channels = useSelector((state) => state.channelsInfo.channels);
+const Authentication = () => {
+  const { usersLogins } = useSelector((state) => (
+    {
+      usersLogins: state.usersInfo.users.map(({ login }) => login),
+    }
+  ));
+  const history = useHistory();
   const dispatch = useDispatch();
   const loginFieldRef = useRef(null);
   useEffect(() => {
     loginFieldRef.current.focus();
   }, []);
-  const handleGoToRegistrationPage = () => {
-    // dispatch(slicesActions.hideModal());
-  };
+
   const formik = useFormik({
     initialValues: {
       login: '',
@@ -30,24 +33,33 @@ const Registration = () => {
         .max(8, 'Количество символов должно быть от 3 до 8')
         .required('Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true),
-      // .notOneOf(loginsList, 'Логин уже занят'),
+        .strict(true)
+        .oneOf(usersLogins, 'Данный логин не зарегистрован в системе'),
       password: Yup
         .string()
         .min(8, 'Количество символов должно быть не меньше 8')
         .required(' Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки'),
+        .trim('Не должно быть пробелов в начале и конце строки')
+        .strict(true),
     }),
-    onSubmit: async (values, actions) => {
-      const channelInfo = { name: values.body };
-      const path = routes.channelsPath();
+    onSubmit: (values, actions) => {
+      const userLogin = { name: values.login };
+      const userPassword = { name: values.password };
       try {
-        await axios.post(
-          path, { data: { attributes: channelInfo } },
-        );
-        dispatch(slicesActions.hideModal());
+        const allUsersList = storage.getAllUsers();
+        const currentUser = allUsersList.find(({ login }) => login === userLogin);
+        if (currentUser.password !== userPassword) {
+          actions.setErrors({ password: 'Неверно указан пароль' });
+          return;
+        }
+        storage.setCurrentUser(currentUser);
+        dispatch(slicesActions.setLogin({ login: currentUser.login }));
+        dispatch(slicesActions.setEmail({ email: currentUser.email }));
+        dispatch(slicesActions.setFavoriteCities({ cities: currentUser.favoriteCities }));
+        history.push('/');
       } catch (e) {
-        actions.setErrors({ body: t('networkError') });
+        // куда вписывать ошибки
+        actions.setErrors({ login: 'Упс, что-то пошло не так! Попробуйте снова.' });
         throw e;
       }
     },
@@ -108,17 +120,15 @@ const Registration = () => {
       </form>
       <div className="">
         <p className="">Еще нет аккаунта? Перейдите по ссылке для регистрации</p>
-        <a
-          className=""
-          onClick={handleGoToRegistrationPage}
-          disabled={formik.isSubmitting}
-          href=""
+        <NavLink
+          isActive={!formik.isSubmitting}
+          to="/reg"
         >
           Зарегистрироваться
-        </a>
+        </NavLink>
       </div>
     </>
   );
 };
 
-export default Registration;
+export default Authentication;
