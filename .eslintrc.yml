@@ -22,7 +22,7 @@ rules:
     - error
     - "single"
   import/extensions: 0
-  no-console: 0
+  no-console: 1
   react/prop-types: 0
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
   jsx-a11y/label-has-associated-control: [ "error", {

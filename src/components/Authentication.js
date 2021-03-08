@@ -23,35 +23,41 @@ const Authentication = () => {
   const formik = useFormik({
     initialValues: {
       login: '',
-      password: '',
       email: '',
+      password: '',
+      confirmPassword: '',
     },
-    validationSchema: Yup.object({
+    validationSchema: Yup.object().shape({
       login: Yup
         .string()
         .min(4, 'Количество символов должно быть от 3 до 8')
         .max(8, 'Количество символов должно быть от 3 до 8')
         .required('Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true)
-        .oneOf(usersLogins, 'Данный логин не зарегистрован в системе'),
+        .oneOf(usersLogins, 'Данный логин не зарегистрован в системе')
+        .strict(true),
       password: Yup
         .string()
         .min(8, 'Количество символов должно быть не меньше 8')
         .required(' Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
         .strict(true),
+      confirmPassword: Yup
+        .string()
+        .oneOf([Yup.ref('password')], 'Пароли не совпадают')
+        .required('Поле является обязательным к заполнению')
+        .strict(true),
     }),
     onSubmit: (values, actions) => {
-      const userLogin = { name: values.login };
-      const userPassword = { name: values.password };
+      const { login, password } = values;
       try {
         const allUsersList = storage.getAllUsers();
-        const currentUser = allUsersList.find(({ login }) => login === userLogin);
-        if (currentUser.password !== userPassword) {
+        const currentUser = allUsersList.find((user) => user.login === login);
+        if (currentUser.password !== password) {
           actions.setErrors({ password: 'Неверно указан пароль' });
           return;
         }
+        console.log('AUTH SUBMIT', currentUser);
         storage.setCurrentUser(currentUser);
         dispatch(slicesActions.setLogin({ login: currentUser.login }));
         dispatch(slicesActions.setEmail({ email: currentUser.email }));
@@ -73,18 +79,29 @@ const Authentication = () => {
 
   const renderFeedBack = (fieldName) => (
     <>
-      {formik.errors[fieldName] && (
-        <div className="invalid-feedback">{formik.errors.body}</div>
+      {formik.errors[fieldName] && formik.touched[fieldName] && (
+        <div className="invalid-feedback">{formik.errors[fieldName]}</div>
       )}
     </>
   );
+
+  // const renderFeedBack = (fieldName) => {
+  //   console.log('AUTH', formik.errors);
+  //   return (
+  //     <>
+  //       {formik.errors[fieldName] && formik.touched[fieldName] && (
+  //         <div className="invalid-feedback">{formik.errors[fieldName]}</div>
+  //       )}
+  //     </>
+  //   );
+  // };
 
   return (
     <>
       <form className="reg-form" onSubmit={formik.handleSubmit}>
         <ul className="reg-form__list" role="presentation">
           <li className="reg-form__item">
-            <label className="reg-form__label" htmlFor="login">Придумайте логин</label>
+            <label className="reg-form__label" htmlFor="login">Укажите логин</label>
             <input
               ref={loginFieldRef}
               value={formik.values.login}
@@ -100,10 +117,10 @@ const Authentication = () => {
             {renderFeedBack('login')}
           </li>
           <li className="reg-form__item">
-            <label className="reg-form__label" htmlFor="password">Придумайте пароль</label>
+            <label className="reg-form__label" htmlFor="password">Укажите пароль</label>
             <input
               ref={loginFieldRef}
-              value={formik.values.login}
+              value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
@@ -115,13 +132,28 @@ const Authentication = () => {
             />
             {renderFeedBack('password')}
           </li>
+          <li className="reg-form__item">
+            <label className="reg-form__label" htmlFor="confirmPassword">Повторите пароль</label>
+            <input
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              disabled={formik.isSubmitting}
+              className="reg-form__control"
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Пароль"
+            />
+            {renderFeedBack('confirmPassword')}
+          </li>
         </ul>
         {renderButton()}
       </form>
       <div className="">
         <p className="">Еще нет аккаунта? Перейдите по ссылке для регистрации</p>
         <NavLink
-          isActive={!formik.isSubmitting}
+          isActive={() => !formik.isSubmitting}
           to="/reg"
         >
           Зарегистрироваться

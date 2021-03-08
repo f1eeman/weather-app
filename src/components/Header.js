@@ -4,19 +4,21 @@ import React from 'react';
 // import routes from '../../routes.js';
 // import { actions as slicesActions } from '../../slices';
 // import Spinner from './Spinner.js';
-// import Logo from '../img/logo.png';
+import Logo from '../img/logo.png';
 
 const Header = () => {
   // const myLogo = new Image();
   // myLogo.src = Logo;
   // const dispatch = useDispatch();
   const handleSignOut = () => {
+    console.log('URA!!!');
     // dispatch(slicesActions.hideModal());
   };
   return (
     <header className="page-header">
       <div className="page-header__wrapper">
-        <p className="page-header__user-menu user-menu">
+        <div className="page-header__user-menu user-menu">
+          <img src={Logo} alt="Логотип сервиса прогноза погоды" />
           <ul className="user-menu__list">
             <li className="user-menu__item">Name</li>
             <li className="user-menu__item">Email</li>
@@ -24,11 +26,11 @@ const Header = () => {
           <button
             className="user-menu__sign-out"
             type="button"
-            handleClick={handleSignOut}
+            onClick={handleSignOut}
           >
             Выйти
           </button>
-        </p>
+        </div>
       </div>
     </header>
   );

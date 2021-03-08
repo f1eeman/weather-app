@@ -6,7 +6,7 @@ import usersInfoReducer, {
   setFavoriteCities,
   addCity,
   removeCity,
-} from './users';
+} from './users.js';
 
 const actions = {
   addUser,

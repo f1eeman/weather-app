@@ -13,6 +13,7 @@ const usersInfoSlice = createSlice({
   },
   reducers: {
     addUser(state, { payload: { user } }) {
+      console.log('SLICE', user);
       state.users.push(user);
     },
     setLogin(state, { payload: { login } }) {

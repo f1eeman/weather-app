@@ -2,6 +2,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -11,19 +12,20 @@ const config = {
   entry: [
     'core-js/modules/es6.promise',
     'core-js/modules/es6.array.iterator',
-    path.resolve(__dirname, 'src/index.js'),
+    path.join(__dirname, 'src', 'index.js'),
   ],
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.join(__dirname, 'dist'),
   },
   devtool: 'source-map',
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 9000,
+    hot: true, // react-hot-loader
     watchContentBase: true,
-    progress: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -37,10 +39,6 @@ const config = {
             plugins: ['@babel/plugin-syntax-dynamic-import'],
           },
         },
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,
@@ -59,9 +57,14 @@ const config = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/index.html'),
+      template: path.join(__dirname, 'src', 'index.html'),
       filename: 'index.html',
     }),
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     { from: path.join(__dirname, 'src', 'assets'), to: 'assets' },
+    //   ],
+    // }),
   ],
 };
 

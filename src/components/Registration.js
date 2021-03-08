@@ -21,49 +21,51 @@ const Registration = () => {
   useEffect(() => {
     loginFieldRef.current.focus();
   }, []);
+
   const formik = useFormik({
     initialValues: {
       login: '',
       password: '',
+      confirmPassword: '',
       email: '',
     },
-    validationSchema: Yup.object({
+    validationSchema: Yup.object().shape({
       login: Yup
         .string()
         .min(4, 'Количество символов должно быть от 3 до 8')
         .max(8, 'Количество символов должно быть от 3 до 8')
         .required('Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true)
-        .notOneOf(usersLogins, 'Логин уже занят'),
+        .notOneOf(usersLogins, 'Логин уже занят')
+        .strict(true),
       email: Yup
         .string()
         .email('Введите валидный email')
         .required('Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true)
-        .notOneOf(usersEmails, 'Указанная электронная почта зарегистрирована'),
+        .notOneOf(usersEmails, 'Указанная электронная почта зарегистрирована')
+        .strict(true),
       password: Yup
         .string()
         .min(8, 'Количество символов должно быть не меньше 8')
         .required('Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
         .strict(true),
+      confirmPassword: Yup
+        .string()
+        .oneOf([Yup.ref('password')], 'Пароли не совпадают')
+        .required('Поле является обязательным к заполнению')
+        .strict(true),
     }),
     onSubmit: (values, actions) => {
-      const userLogin = { name: values.login };
-      const userPassword = { name: values.password };
-      const userEmail = { name: values.email };
-      const userId = uniqueId();
+      const { login, password, email } = values;
+      const id = uniqueId();
       const userInfo = {
-        id: userId,
-        login: userLogin,
-        email: userEmail,
-        password: userPassword,
-        favoriteCities: [],
+        id, login, password, email, favoriteCities: [],
       };
+      console.log('userInfo', userInfo);
       try {
-        storage.addUser({ ...userInfo });
+        storage.addUser(userInfo);
         dispatch(slicesActions.addUser({ user: omit(userInfo, 'password') }));
         history.push('/auth');
       } catch (e) {
@@ -80,10 +82,21 @@ const Registration = () => {
     </button>
   );
 
+  // const renderFeedBack = (fieldName) => {
+  //   console.log('REG', formik.errors);
+  //   return (
+  //     <>
+  //       {formik.errors[fieldName] && formik.touched[fieldName] && (
+  //         <div className="invalid-feedback">{formik.errors[fieldName]}</div>
+  //       )}
+  //     </>
+  //   );
+  // };
+
   const renderFeedBack = (fieldName) => (
     <>
-      {formik.errors[fieldName] && (
-        <div className="invalid-feedback">{formik.errors.body}</div>
+      {formik.errors[fieldName] && formik.touched[fieldName] && (
+        <div className="invalid-feedback">{formik.errors[fieldName]}</div>
       )}
     </>
   );
@@ -126,8 +139,7 @@ const Registration = () => {
           <li className="reg-form__item">
             <label className="reg-form__label" htmlFor="password">Придумайте пароль</label>
             <input
-              ref={loginFieldRef}
-              value={formik.values.login}
+              value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
@@ -139,13 +151,28 @@ const Registration = () => {
             />
             {renderFeedBack('password')}
           </li>
+          <li className="reg-form__item">
+            <label className="reg-form__label" htmlFor="confirmPassword">Повторите пароль</label>
+            <input
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              disabled={formik.isSubmitting}
+              className="reg-form__control"
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              placeholder="Пароль"
+            />
+            {renderFeedBack('confirmPassword')}
+          </li>
         </ul>
         {renderButton()}
       </form>
       <div className="">
         <p className="">Если вы уже зарегистрированы, войдите в систему</p>
         <NavLink
-          isActive={!formik.isSubmitting}
+          isActive={() => !formik.isSubmitting}
           to="/auth"
         >
           Войти
