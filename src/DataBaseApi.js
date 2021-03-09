@@ -49,6 +49,11 @@ class DataBaseApi {
     return currentUser;
   }
 
+  removeCurrentUser() {
+    const currentUser = parse('object', null);
+    this.dataBase.setItem('currentUser', currentUser);
+  }
+
   reset() {
     this.dataBase.clear();
   }

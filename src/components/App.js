@@ -1,14 +1,27 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-import storage from '../storage.js';
-// import '../scss/style.scss';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import AuthenticationPage from './Authentication.js';
+import RegistrationPage from './Registration.js';
+import Home from './Home.js';
 
 const App = () => {
-  const currentUser = storage.getCurrentUser();
-  if (!currentUser) {
-    return <Redirect to="/reg" />;
-  }
-  return <Redirect to="/" />;
+  const currentUser = useSelector((state) => state.usersInfo.currentUser);
+  return (
+    <BrowserRouter>
+      {currentUser ? <Redirect to="/reg" /> : <Redirect to="/" />}
+      <Switch>
+        <Route exact path="/reg" component={RegistrationPage} />
+        <Route exact path="/auth" component={AuthenticationPage} />
+        <Route exact path="/"><Home /></Route>
+      </Switch>
+    </BrowserRouter>
+  );
 };
 
 export default App;

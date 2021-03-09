@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import usersInfoReducer, {
   addUser,
+  removeCurrentUser,
   setLogin,
   setEmail,
   setFavoriteCities,
@@ -10,6 +11,7 @@ import usersInfoReducer, {
 
 const actions = {
   addUser,
+  removeCurrentUser,
   setLogin,
   setEmail,
   setFavoriteCities,

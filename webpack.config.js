@@ -17,15 +17,16 @@ const config = {
   output: {
     filename: 'main.js',
     path: path.join(__dirname, 'dist'),
+    // assetModuleFilename: 'assets/[name][hash][ext]',
   },
-  devtool: 'source-map',
+  devtool: 'eval',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 9000,
-    hot: true, // react-hot-loader
+    port: 8080,
     watchContentBase: true,
     historyApiFallback: true,
+    clientLogLevel: 'silent',
   },
   module: {
     rules: [
@@ -36,7 +37,10 @@ const config = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['@babel/plugin-syntax-dynamic-import'],
+            plugins: [
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/plugin-proposal-class-properties',
+            ],
           },
         },
       },
@@ -50,21 +54,21 @@ const config = {
       },
       {
         test: /\.(png|svg|jpg|jpeg)$/,
-        use: 'asset/resource',
+        type: 'asset/resource',
       },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: path.join(__dirname, 'src', 'assets'), to: 'assets' },
+      ],
+    }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'src', 'index.html'),
+      template: path.join(__dirname, 'src', 'template.html'),
       filename: 'index.html',
     }),
-    // new CopyWebpackPlugin({
-    //   patterns: [
-    //     { from: path.join(__dirname, 'src', 'assets'), to: 'assets' },
-    //   ],
-    // }),
   ],
 };
 

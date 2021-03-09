@@ -48,24 +48,27 @@ const Authentication = () => {
         .required('Поле является обязательным к заполнению')
         .strict(true),
     }),
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       const { login, password } = values;
       try {
-        const allUsersList = storage.getAllUsers();
+        const allUsersList = await storage.getAllUsers();
         const currentUser = allUsersList.find((user) => user.login === login);
         if (currentUser.password !== password) {
-          actions.setErrors({ password: 'Неверно указан пароль' });
-          return;
+          throw new Error('Неверно указан пароль');
         }
         console.log('AUTH SUBMIT', currentUser);
-        storage.setCurrentUser(currentUser);
+        await storage.setCurrentUser(currentUser);
         dispatch(slicesActions.setLogin({ login: currentUser.login }));
         dispatch(slicesActions.setEmail({ email: currentUser.email }));
         dispatch(slicesActions.setFavoriteCities({ cities: currentUser.favoriteCities }));
         history.push('/');
       } catch (e) {
         // куда вписывать ошибки
-        actions.setErrors({ login: 'Упс, что-то пошло не так! Попробуйте снова.' });
+        if (e.message === 'Неверно указан пароль') {
+          actions.setErrors({ password: e.message });
+        } else {
+          actions.setErrors({ login: 'Упс, что-то пошло не так! Попробуйте снова.' });
+        }
         throw e;
       }
     },

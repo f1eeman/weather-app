@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-// import axios from 'axios';
+import axios from 'axios';
 // import routes from '../../routes.js';
-// import { actions as slicesActions } from '../../slices';
+import { actions as slicesActions } from '../slices/index.js';
 import FavoriteCities from './FavoriteCities.js';
 import Header from './Header.js';
 import Spinner from './Spinner.js';

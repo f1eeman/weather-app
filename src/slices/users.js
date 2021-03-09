@@ -16,6 +16,12 @@ const usersInfoSlice = createSlice({
       console.log('SLICE', user);
       state.users.push(user);
     },
+    removeCurrentUser(state) {
+      const { currentUser } = state;
+      currentUser.email = null;
+      currentUser.login = null;
+      currentUser.favoriteCities = [];
+    },
     setLogin(state, { payload: { login } }) {
       const { currentUser } = state;
       currentUser.login = login;
@@ -41,6 +47,7 @@ const usersInfoSlice = createSlice({
 
 export const {
   addUser,
+  removeCurrentUser,
   setLogin,
   setEmail,
   setFavoriteCities,
