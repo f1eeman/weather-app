@@ -3,11 +3,6 @@ const mapping = {
   json: JSON.parse,
 };
 
-const parse = (type, data) => {
-  console.log('type', type);
-  console.log('data', data);
-  console.log('mapping[type](data)', mapping[type](data));
-  return mapping[type](data);
-};
+const parse = (type, data) => mapping[type](data);
 
 export default parse;

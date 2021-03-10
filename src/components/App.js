@@ -11,10 +11,12 @@ import RegistrationPage from './Registration.js';
 import Home from './Home.js';
 
 const App = () => {
+  console.log('App Comp');
   const currentUser = useSelector((state) => state.usersInfo.currentUser);
+  console.log('App Comp currentUser', currentUser);
   return (
     <BrowserRouter>
-      {currentUser ? <Redirect to="/reg" /> : <Redirect to="/" />}
+      {currentUser ? <Redirect to="/" /> : <Redirect to="/reg" />}
       <Switch>
         <Route exact path="/reg" component={RegistrationPage} />
         <Route exact path="/auth" component={AuthenticationPage} />

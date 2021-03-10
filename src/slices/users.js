@@ -9,11 +9,11 @@ const usersInfoSlice = createSlice({
       login: null,
       email: null,
       favoriteCities: [],
+      query: null,
     },
   },
   reducers: {
     addUser(state, { payload: { user } }) {
-      console.log('SLICE', user);
       state.users.push(user);
     },
     removeCurrentUser(state) {
@@ -21,6 +21,10 @@ const usersInfoSlice = createSlice({
       currentUser.email = null;
       currentUser.login = null;
       currentUser.favoriteCities = [];
+    },
+    addQuery(state, { payload: { query } }) {
+      const { currentUser } = state;
+      currentUser.query = query;
     },
     setLogin(state, { payload: { login } }) {
       const { currentUser } = state;
@@ -48,6 +52,7 @@ const usersInfoSlice = createSlice({
 export const {
   addUser,
   removeCurrentUser,
+  addQuery,
   setLogin,
   setEmail,
   setFavoriteCities,

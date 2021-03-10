@@ -2,16 +2,19 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import storage from '../storage.js';
 // import routes from '../../routes.js';
 import { actions as slicesActions } from '../slices/index.js';
 import FavoriteCities from './FavoriteCities.js';
 import Header from './Header.js';
 import Spinner from './Spinner.js';
+import getDefaultCities from '../defaultCities.js';
 
 const Home = () => {
-  // const channels = useSelector((state) => state.channelsInfo.channels);
-  // const dispatch = useDispatch();
+  console.log('Home Comp');
+  const currentUserCities = useSelector((state) => state.usersInfo.currentUser.favoriteCities);
+  const defaultCities = getDefaultCities();
+  const dispatch = useDispatch();
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
@@ -25,11 +28,19 @@ const Home = () => {
         .string()
         .required('Поле является обязательным к заполнению')
         .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true),
-      // .notOneOf(loginsList, 'Логин уже занят'),
+        .strict(true)
+        .notOneOf([...defaultCities, ...currentUserCities], 'Информация о даннном городе уже была загружена ранее'),
     }),
-    onSubmit: (values, actions) => {
-      console.log(values, actions);
+    onSubmit: async (values, actions) => {
+      const { body } = values;
+      try {
+        await storage.addUserFavoriteCity(body);
+        dispatch(slicesActions.addCity({ city: body }));
+        dispatch(slicesActions.addQuery({ quey: body }));
+      } catch (e) {
+        actions.setErrors({ body: 'Упс, что-то пошло не так! Попробуйте снова.' });
+        throw e;
+      }
     },
   });
 
@@ -39,9 +50,9 @@ const Home = () => {
     </button>
   );
 
-  const renderFeedBack = (fieldName) => (
+  const renderFeedBack = () => (
     <>
-      {formik.errors[fieldName] && (
+      {formik.errors.body && formik.touched.body && (
         <div className="invalid-feedback">{formik.errors.body}</div>
       )}
     </>
@@ -67,7 +78,7 @@ const Home = () => {
                     disabled={formik.isSubmitting}
                     className="search-form__control"
                     id="city-name"
-                    name="city-name"
+                    name="body"
                     type="text"
                     placeholder="Введите название города..."
                   />

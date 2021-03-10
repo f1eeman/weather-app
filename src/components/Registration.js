@@ -9,6 +9,7 @@ import Spinner from './Spinner.js';
 import { actions as slicesActions } from '../slices/index.js';
 
 const Registration = () => {
+  console.log('Registration Comp');
   const { usersLogins, usersEmails } = useSelector((state) => (
     {
       usersLogins: state.usersInfo.users.map(({ login }) => login),
@@ -57,15 +58,15 @@ const Registration = () => {
         .required('Поле является обязательным к заполнению')
         .strict(true),
     }),
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       const { login, password, email } = values;
       const id = uniqueId();
       const userInfo = {
         id, login, password, email, favoriteCities: [],
       };
-      console.log('userInfo', userInfo);
+      // console.log('userInfo', userInfo);
       try {
-        storage.addUser(userInfo);
+        await storage.addUser(userInfo);
         dispatch(slicesActions.addUser({ user: omit(userInfo, 'password') }));
         history.push('/auth');
       } catch (e) {

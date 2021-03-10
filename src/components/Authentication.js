@@ -8,6 +8,7 @@ import Spinner from './Spinner.js';
 import { actions as slicesActions } from '../slices/index.js';
 
 const Authentication = () => {
+  console.log('Authentication Comp');
   const { usersLogins } = useSelector((state) => (
     {
       usersLogins: state.usersInfo.users.map(({ login }) => login),
@@ -56,7 +57,7 @@ const Authentication = () => {
         if (currentUser.password !== password) {
           throw new Error('Неверно указан пароль');
         }
-        console.log('AUTH SUBMIT', currentUser);
+        // console.log('AUTH SUBMIT', currentUser);
         await storage.setCurrentUser(currentUser);
         dispatch(slicesActions.setLogin({ login: currentUser.login }));
         dispatch(slicesActions.setEmail({ email: currentUser.email }));
