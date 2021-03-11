@@ -10,7 +10,7 @@ import storage from '../storage.js';
 import Logo from '../assets/img/logo.png';
 
 const Header = () => {
-  console.log('Header Comp');
+  // console.log('Header Comp');
   const currentUser = useSelector((state) => state.usersInfo.currentUser);
   const history = useHistory();
   const dispatch = useDispatch();

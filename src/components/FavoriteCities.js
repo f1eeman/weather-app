@@ -1,49 +1,31 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { unwrapResult } from '@reduxjs/toolkit';
 import { actions as slicesActions } from '../slices/index.js';
 import getDefaultCities from '../defaultCities.js';
 
 const FavoriteCities = () => {
-  console.log('FavoriteCities Comp');
+  // console.log('FavoriteCities Comp');
   const dispatch = useDispatch();
-  const {
-    currentUserCities,
-    currentUserQuery,
-    citiesWheaterInfoList,
-    gettingWeatherStatus,
-  } = useSelector((state) => (
+  const { currentUserCities, citiesWheaterInfoList } = useSelector((state) => (
     {
       currentUserCities: state.usersInfo.currentUser.favoriteCities,
-      currentUserQuery: state.usersInfo.currentUser.query,
       citiesWheaterInfoList: state.citiesWeather.weatherInfoList,
-      gettingWeatherStatus: state.citiesWeather.gettingWeatherStatus,
     }
   ));
   const defaultCities = getDefaultCities();
   const commonCities = [...defaultCities, ...currentUserCities];
+
   useEffect(() => {
     const fetchData = () => {
-      commonCities.forEach(async ({ name, removable }) => {
-        const result = await dispatch(slicesActions.getCityWeatherInfo({ city: name, removable }));
-        unwrapResult(result);
+      commonCities.forEach(async ({ cityName, removable }) => {
+        await dispatch(slicesActions.getCityWeatherInfo({ cityName, removable }));
       });
     };
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!currentUserQuery) {
-        return;
-      }
-      const result = await dispatch(
-        slicesActions.getCityWeatherInfo({ city: currentUserQuery, removable: true }),
-      );
-      unwrapResult(result);
+    return () => {
+      dispatch(slicesActions.resetAllCitiesWeaherInfo());
     };
-    fetchData();
-  }, [currentUserQuery]);
+  }, []);
 
   const handleRemoveFromFavorite = (id) => () => {
     console.log('sadasd');

@@ -1,8 +1,8 @@
 const getCities = () => [
-  { name: 'Москва', removable: false },
-  { name: 'Париж', removable: false },
-  { name: 'Лондон', removable: false },
-  { name: 'Нью-Йорк', removable: false },
-  { name: 'Пекин', removable: false },
+  { cityName: 'Москва', removable: false },
+  { cityName: 'Париж', removable: false },
+  { cityName: 'Лондон', removable: false },
+  { cityName: 'Нью-Йорк', removable: false },
+  { cityName: 'Пекин', removable: false },
 ];
 export default getCities;

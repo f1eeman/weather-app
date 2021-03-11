@@ -9,7 +9,6 @@ const usersInfoSlice = createSlice({
       login: null,
       email: null,
       favoriteCities: [],
-      query: null,
       isLoggedIn: false,
     },
   },
@@ -26,10 +25,6 @@ const usersInfoSlice = createSlice({
         isLoggedIn: false,
       };
       return { ...state, currentUser };
-    },
-    addQuery(state, { payload: { query } }) {
-      const { currentUser } = state;
-      return { ...state, currentUser: { ...currentUser, query } };
     },
     setLogin(state, { payload: { login } }) {
       const { currentUser } = state;
@@ -54,6 +49,7 @@ const usersInfoSlice = createSlice({
         ...state, currentUser: { ...currentUser, favoriteCities: [...favoriteCities, city] },
       };
     },
+    // не хвататет id
     removeCity(state, { payload: { id } }) {
       const { currentUser } = state;
       const { favoriteCities } = currentUser;
@@ -68,7 +64,6 @@ const usersInfoSlice = createSlice({
 export const {
   addUser,
   removeCurrentUser,
-  addQuery,
   setLogin,
   setEmail,
   changeLoggingStatus,

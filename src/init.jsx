@@ -15,12 +15,11 @@ const runApp = (storage) => {
     storage.initDataBase();
   }
 
-  // console.log(storage.isInit());
-
   const store = configureStore({ reducer });
 
   const users = storage.getAllUsers();
   const currentUser = storage.getCurrentUser();
+  console.log('init currentUser', currentUser);
 
   users.forEach((user) => {
     console.log('users.forEach((user) => {}');

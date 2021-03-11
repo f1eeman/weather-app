@@ -11,18 +11,22 @@ import Spinner from './Spinner.js';
 import getDefaultCities from '../defaultCities.js';
 
 const Home = () => {
-  console.log('Home Comp');
-  const currentUserCities = useSelector((state) => state.usersInfo.currentUser.favoriteCities);
+  // console.log('Home Comp');
+  const { currentUserCities } = useSelector((state) => (
+    { currentUserCities: state.usersInfo.currentUser.favoriteCities }
+  ));
   const defaultCities = getDefaultCities();
   const commonCities = [...defaultCities, ...currentUserCities].map(
-    ({ name }) => name.toUpperCase(),
+    ({ cityName }) => cityName.toUpperCase(),
   );
-  console.log(commonCities);
+
   const dispatch = useDispatch();
   const inputRef = useRef(null);
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
   const formik = useFormik({
     initialValues: {
       body: '',
@@ -39,15 +43,18 @@ const Home = () => {
     }),
     onSubmit: async (values, actions) => {
       const { body } = values;
-      const city = { name: body, removable: true };
-      try {
-        await storage.addUserFavoriteCity({ city });
+      const city = { cityName: body, removable: true };
+      const resultAction = await dispatch(
+        slicesActions.getCityWeatherInfo({ cityName: body, removable: true }),
+      );
+      actions.resetForm();
+      if (slicesActions.getCityWeatherInfo.fulfilled.match(resultAction)) {
+        storage.addUserFavoriteCity(city);
         dispatch(slicesActions.addCity({ city }));
-        dispatch(slicesActions.addQuery({ query: body }));
-        actions.resetForm();
-      } catch (e) {
+      } else if (resultAction.payload) {
+        actions.setErrors({ body: `Название города указано неверно: "${body}"` });
+      } else {
         actions.setErrors({ body: 'Упс, что-то пошло не так! Попробуйте снова.' });
-        throw e;
       }
     },
   });
@@ -72,8 +79,8 @@ const Home = () => {
 
   const renderFeedBack = () => (
     <>
-      {formik.errors.body && formik.touched.body && (
-        <div className="invalid-feedback">{formik.errors.body}</div>
+      {formik.errors.body && (
+        <p className="search-form__feedback feedback--validation">{formik.errors.body}</p>
       )}
     </>
   );

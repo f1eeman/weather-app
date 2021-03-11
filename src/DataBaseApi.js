@@ -57,10 +57,18 @@ class DataBaseApi {
 
   addUserFavoriteCity(city) {
     const rawData = this.dataBase.getItem('currentUser');
+    const allUsers = this.getAllUsers();
     const currentUser = parse('json', rawData);
     currentUser.favoriteCities.push(city);
-    const preparedDataForWriting = parse('object', currentUser);
-    this.dataBase.setItem('currentUser', preparedDataForWriting);
+    allUsers.forEach((user) => {
+      if (user.login === currentUser.login) {
+        user.favoriteCities.push(city);
+      }
+    });
+    const preparedDataForWriting1 = parse('object', currentUser);
+    const preparedDataForWriting2 = parse('object', allUsers);
+    this.dataBase.setItem('currentUser', preparedDataForWriting1);
+    this.dataBase.setItem('users', preparedDataForWriting2);
   }
 
   removeCurrentUser() {

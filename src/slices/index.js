@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import usersInfoReducer, {
   addUser,
   removeCurrentUser,
-  addQuery,
   setLogin,
   setEmail,
   changeLoggingStatus,
@@ -18,7 +17,6 @@ import citiesWeatherReducer, {
 const actions = {
   addUser,
   removeCurrentUser,
-  addQuery,
   setLogin,
   setEmail,
   changeLoggingStatus,
