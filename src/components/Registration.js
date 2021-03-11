@@ -62,7 +62,7 @@ const Registration = () => {
       const { login, password, email } = values;
       const id = uniqueId();
       const userInfo = {
-        id, login, password, email, favoriteCities: [],
+        id, login, password, email, favoriteCities: [], isLoggedIn: false,
       };
       // console.log('userInfo', userInfo);
       try {

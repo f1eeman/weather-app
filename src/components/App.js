@@ -16,7 +16,7 @@ const App = () => {
   console.log('App Comp currentUser', currentUser);
   return (
     <BrowserRouter>
-      {currentUser ? <Redirect to="/" /> : <Redirect to="/reg" />}
+      {(currentUser && currentUser.isLoggedIn) ? <Redirect to="/" /> : <Redirect to="/reg" />}
       <Switch>
         <Route exact path="/reg" component={RegistrationPage} />
         <Route exact path="/auth" component={AuthenticationPage} />

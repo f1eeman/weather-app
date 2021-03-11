@@ -10,6 +10,7 @@ const usersInfoSlice = createSlice({
       email: null,
       favoriteCities: [],
       query: null,
+      isLoggedIn: false,
     },
   },
   reducers: {
@@ -21,6 +22,7 @@ const usersInfoSlice = createSlice({
       currentUser.email = null;
       currentUser.login = null;
       currentUser.favoriteCities = [];
+      currentUser.isLoggedIn = false;
     },
     addQuery(state, { payload: { query } }) {
       const { currentUser } = state;
@@ -33,6 +35,10 @@ const usersInfoSlice = createSlice({
     setEmail(state, { payload: { email } }) {
       const { currentUser } = state;
       currentUser.email = email;
+    },
+    changeLoggingStatus(state, { payload: { isLoggedIn } }) {
+      const { currentUser } = state;
+      currentUser.isLoggedIn = isLoggedIn;
     },
     addCity(state, { payload: { city } }) {
       const { currentUser } = state;
@@ -55,6 +61,7 @@ export const {
   addQuery,
   setLogin,
   setEmail,
+  changeLoggingStatus,
   setFavoriteCities,
   addCity,
   removeCity,

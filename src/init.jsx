@@ -15,7 +15,7 @@ const runApp = (storage) => {
     storage.initDataBase();
   }
 
-  console.log(storage.isInit());
+  // console.log(storage.isInit());
 
   const store = configureStore({ reducer });
 
@@ -27,12 +27,15 @@ const runApp = (storage) => {
     store.dispatch(actions.addUser({ user }));
   });
 
-  if (currentUser) {
+  if (currentUser && currentUser.isLoggedIn) {
     console.log('actions.setLogin({ login })');
-    const { login, email, favoriteCities: cities } = currentUser;
+    const {
+      login, email, favoriteCities: cities, isLoggedIn,
+    } = currentUser;
     store.dispatch(actions.setLogin({ login }));
     store.dispatch(actions.setEmail({ email }));
     store.dispatch(actions.setFavoriteCities({ cities }));
+    store.dispatch(actions.changeLoggingStatus({ isLoggedIn }));
   }
 
   render(

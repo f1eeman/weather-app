@@ -58,10 +58,11 @@ const Authentication = () => {
           throw new Error('Неверно указан пароль');
         }
         // console.log('AUTH SUBMIT', currentUser);
-        await storage.setCurrentUser(currentUser);
+        await storage.setCurrentUser({ ...currentUser, isLoggedIn: true });
         dispatch(slicesActions.setLogin({ login: currentUser.login }));
         dispatch(slicesActions.setEmail({ email: currentUser.email }));
         dispatch(slicesActions.setFavoriteCities({ cities: currentUser.favoriteCities }));
+        dispatch(slicesActions.changeLoggingStatus({ isLoggedIn: true }));
         history.push('/');
       } catch (e) {
         // куда вписывать ошибки
@@ -123,7 +124,6 @@ const Authentication = () => {
           <li className="reg-form__item">
             <label className="reg-form__label" htmlFor="password">Укажите пароль</label>
             <input
-              ref={loginFieldRef}
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
