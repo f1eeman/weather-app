@@ -17,6 +17,7 @@ const Header = () => {
   const handleSignOut = () => {
     storage.removeCurrentUser();
     dispatch(slicesActions.removeCurrentUser());
+    dispatch(slicesActions.resetAllCitiesWeaherInfo());
     history.push('/reg');
   };
   return (

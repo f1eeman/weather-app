@@ -12,6 +12,7 @@ import usersInfoReducer, {
 } from './users.js';
 import citiesWeatherReducer, {
   getCityWeatherInfo,
+  resetAllCitiesWeaherInfo,
 } from './citiesWeather.js';
 
 const actions = {
@@ -25,6 +26,7 @@ const actions = {
   addCity,
   removeCity,
   getCityWeatherInfo,
+  resetAllCitiesWeaherInfo,
 };
 
 const rootReducer = combineReducers({

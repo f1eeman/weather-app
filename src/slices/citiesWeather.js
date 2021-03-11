@@ -23,11 +23,11 @@ const getCityWeatherInfo = createAsyncThunk('gettingWeather', async ({ city, rem
     id,
     lat,
     lon,
-    temp,
-    feelsLike,
-    pressure,
-    humidity,
-    cloudiness,
+    temp: `${Math.round(temp)}\u2103`,
+    feelsLike: `${Math.round(feelsLike)}\u2103`,
+    pressure: `${pressure} гП`,
+    humidity: `${humidity}\uFE6a`,
+    cloudiness: `${cloudiness}\uFE6a`,
     condition,
   };
 
@@ -40,20 +40,27 @@ const citiesWeatherSlice = createSlice({
     weatherInfoList: [],
     gettingWeatherStatus: 'idle',
   },
+  reducers: {
+    resetAllCitiesWeaherInfo() {
+      return { weatherInfoList: [], gettingWeatherStatus: 'idle' };
+    },
+  },
   extraReducers: {
-    [getCityWeatherInfo.pending]: (state) => {
-      state.gettingWeatherStatus = 'processing';
-    },
+    [getCityWeatherInfo.pending]: (state) => (
+      { ...state, gettingWeatherStatus: 'processing' }
+    ),
     [getCityWeatherInfo.fulfilled]: (state, { payload: { weatherInfo } }) => {
-      state.weatherInfoList.push(weatherInfo);
-      state.gettingWeatherStatus = 'finished';
+      const { weatherInfoList } = state;
+      return { weatherInfoList: [...weatherInfoList, weatherInfo], gettingWeatherStatus: 'finished' };
     },
-    [getCityWeatherInfo.rejected]: (state) => {
-      state.gettingWeatherStatus = 'failed';
-    },
+    [getCityWeatherInfo.rejected]: (state) => (
+      { ...state, gettingWeatherStatus: 'failed' }
+    ),
   },
 });
 
 export { getCityWeatherInfo };
+
+export const { resetAllCitiesWeaherInfo } = citiesWeatherSlice.actions;
 
 export default citiesWeatherSlice.reducer;
