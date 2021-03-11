@@ -15,42 +15,52 @@ const usersInfoSlice = createSlice({
   },
   reducers: {
     addUser(state, { payload: { user } }) {
-      state.users.push(user);
+      const { users } = state;
+      return { ...state, users: [...users, user] };
     },
     removeCurrentUser(state) {
-      const { currentUser } = state;
-      currentUser.email = null;
-      currentUser.login = null;
-      currentUser.favoriteCities = [];
-      currentUser.isLoggedIn = false;
+      const currentUser = {
+        email: null,
+        login: null,
+        favoriteCities: [],
+        isLoggedIn: false,
+      };
+      return { ...state, currentUser };
     },
     addQuery(state, { payload: { query } }) {
       const { currentUser } = state;
-      currentUser.query = query;
+      return { ...state, currentUser: { ...currentUser, query } };
     },
     setLogin(state, { payload: { login } }) {
       const { currentUser } = state;
-      currentUser.login = login;
+      return { ...state, currentUser: { ...currentUser, login } };
     },
     setEmail(state, { payload: { email } }) {
       const { currentUser } = state;
-      currentUser.email = email;
+      return { ...state, currentUser: { ...currentUser, email } };
     },
     changeLoggingStatus(state, { payload: { isLoggedIn } }) {
       const { currentUser } = state;
-      currentUser.isLoggedIn = isLoggedIn;
-    },
-    addCity(state, { payload: { city } }) {
-      const { currentUser } = state;
-      currentUser.favoriteCities.push(city);
+      return { ...state, currentUser: { ...currentUser, isLoggedIn } };
     },
     setFavoriteCities(state, { payload: { cities } }) {
       const { currentUser } = state;
-      currentUser.favoriteCities = cities;
+      return { ...state, currentUser: { ...currentUser, favoriteCities: cities } };
+    },
+    addCity(state, { payload: { city } }) {
+      const { currentUser } = state;
+      const { favoriteCities } = currentUser;
+      return {
+        ...state, currentUser: { ...currentUser, favoriteCities: [...favoriteCities, city] },
+      };
     },
     removeCity(state, { payload: { id } }) {
       const { currentUser } = state;
-      currentUser.favoriteCities = currentUser.favoriteCities.filter((city) => city.id !== id);
+      const { favoriteCities } = currentUser;
+      const filteredFavoriteCities = favoriteCities.filter((city) => city.id !== id);
+      return {
+        ...state, currentUser: { ...currentUser, favoriteCities: filteredFavoriteCities },
+      };
     },
   },
 });
