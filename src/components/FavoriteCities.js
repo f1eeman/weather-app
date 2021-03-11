@@ -7,24 +7,43 @@ import getDefaultCities from '../defaultCities.js';
 const FavoriteCities = () => {
   console.log('FavoriteCities Comp');
   const dispatch = useDispatch();
-  const { currentUserCities, currentUserQuery, citiesWheaterInfoList } = useSelector((state) => (
+  const {
+    currentUserCities,
+    currentUserQuery,
+    citiesWheaterInfoList,
+    gettingWeatherStatus,
+  } = useSelector((state) => (
     {
       currentUserCities: state.usersInfo.currentUser.favoriteCities,
       currentUserQuery: state.usersInfo.currentUser.query,
       citiesWheaterInfoList: state.citiesWeather.weatherInfoList,
+      gettingWeatherStatus: state.citiesWeather.gettingWeatherStatus,
     }
   ));
   const defaultCities = getDefaultCities();
+  const commonCities = [...defaultCities, ...currentUserCities];
   useEffect(() => {
-    console.log('FavoriteCities Comp USEEFFECT');
     const fetchData = () => {
-      defaultCities.forEach(async ({ name, removable }) => {
+      commonCities.forEach(async ({ name, removable }) => {
         const result = await dispatch(slicesActions.getCityWeatherInfo({ city: name, removable }));
         unwrapResult(result);
       });
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!currentUserQuery) {
+        return;
+      }
+      const result = await dispatch(
+        slicesActions.getCityWeatherInfo({ city: currentUserQuery, removable: true }),
+      );
+      unwrapResult(result);
+    };
+    fetchData();
+  }, [currentUserQuery]);
 
   const handleRemoveFromFavorite = (id) => () => {
     console.log('sadasd');

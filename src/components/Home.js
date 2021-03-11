@@ -39,10 +39,11 @@ const Home = () => {
     }),
     onSubmit: async (values, actions) => {
       const { body } = values;
+      const city = { name: body, removable: true };
       try {
-        await storage.addUserFavoriteCity(body);
-        dispatch(slicesActions.addCity({ city: body }));
-        dispatch(slicesActions.addQuery({ quey: body }));
+        await storage.addUserFavoriteCity({ city });
+        dispatch(slicesActions.addCity({ city }));
+        dispatch(slicesActions.addQuery({ query: body }));
         actions.resetForm();
       } catch (e) {
         actions.setErrors({ body: 'Упс, что-то пошло не так! Попробуйте снова.' });
