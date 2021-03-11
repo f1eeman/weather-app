@@ -14,6 +14,10 @@ const Home = () => {
   console.log('Home Comp');
   const currentUserCities = useSelector((state) => state.usersInfo.currentUser.favoriteCities);
   const defaultCities = getDefaultCities();
+  const commonCities = [...defaultCities, ...currentUserCities].map(
+    ({ name }) => name.toUpperCase(),
+  );
+  console.log(commonCities);
   const dispatch = useDispatch();
   const inputRef = useRef(null);
   useEffect(() => {
@@ -27,9 +31,11 @@ const Home = () => {
       body: Yup
         .string()
         .required('Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true)
-        .notOneOf([...defaultCities, ...currentUserCities], 'Информация о даннном городе уже была загружена ранее'),
+        .matches(
+          /^[a-zA-Zа-яА-Я\s]+$/,
+          'Нельзя использовать специальные символы и цифры',
+        )
+        .notOneOf(commonCities, 'Информация о даннном городе уже имеется'),
     }),
     onSubmit: async (values, actions) => {
       const { body } = values;
@@ -37,12 +43,25 @@ const Home = () => {
         await storage.addUserFavoriteCity(body);
         dispatch(slicesActions.addCity({ city: body }));
         dispatch(slicesActions.addQuery({ quey: body }));
+        actions.resetForm();
       } catch (e) {
         actions.setErrors({ body: 'Упс, что-то пошло не так! Попробуйте снова.' });
         throw e;
       }
     },
   });
+
+  const handleBlur = (e) => {
+    formik.handleBlur(e);
+    const trimmedValue = (e.target.value || '').trim();
+    formik.setFieldValue(e.target.name, trimmedValue);
+  };
+
+  const handleChange = (e) => {
+    formik.handleChange(e);
+    const trimmedValue = (e.target.value || '').toUpperCase();
+    formik.setFieldValue(e.target.name, trimmedValue);
+  };
 
   const renderButton = () => (
     <button type="submit" disabled={formik.isSubmitting}>
@@ -73,8 +92,8 @@ const Home = () => {
                   <input
                     ref={inputRef}
                     value={formik.values.body}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     disabled={formik.isSubmitting}
                     className="search-form__control"
                     id="city-name"

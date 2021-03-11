@@ -31,23 +31,18 @@ const Authentication = () => {
     validationSchema: Yup.object().shape({
       login: Yup
         .string()
-        .min(4, 'Количество символов должно быть от 3 до 8')
-        .max(8, 'Количество символов должно быть от 3 до 8')
+        .min(4, 'Количество символов должно быть от 3 до 30')
+        .max(30, 'Количество символов должно быть от 3 до 30')
         .required('Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки')
-        .oneOf(usersLogins, 'Данный логин не зарегистрован в системе')
-        .strict(true),
+        .oneOf(usersLogins, 'Данный логин не зарегистрован в системе'),
       password: Yup
         .string()
         .min(8, 'Количество символов должно быть не меньше 8')
-        .required(' Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true),
+        .required(' Поле является обязательным к заполнению'),
       confirmPassword: Yup
         .string()
         .oneOf([Yup.ref('password')], 'Пароли не совпадают')
-        .required('Поле является обязательным к заполнению')
-        .strict(true),
+        .required('Поле является обязательным к заполнению'),
     }),
     onSubmit: async (values, actions) => {
       const { login, password } = values;
@@ -76,6 +71,12 @@ const Authentication = () => {
     },
   });
 
+  const handleChange = (e) => {
+    formik.handleChange(e);
+    const trimmedValue = (e.target.value || '').replace(/\s+/g, '');
+    formik.setFieldValue(e.target.name, trimmedValue);
+  };
+
   const renderButton = () => (
     <button type="submit" disabled={formik.isSubmitting}>
       {formik.isSubmitting ? <Spinner /> : 'Отправить'}
@@ -90,17 +91,6 @@ const Authentication = () => {
     </>
   );
 
-  // const renderFeedBack = (fieldName) => {
-  //   console.log('AUTH', formik.errors);
-  //   return (
-  //     <>
-  //       {formik.errors[fieldName] && formik.touched[fieldName] && (
-  //         <div className="invalid-feedback">{formik.errors[fieldName]}</div>
-  //       )}
-  //     </>
-  //   );
-  // };
-
   return (
     <>
       <form className="reg-form" onSubmit={formik.handleSubmit}>
@@ -110,7 +100,7 @@ const Authentication = () => {
             <input
               ref={loginFieldRef}
               value={formik.values.login}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
               className="reg-form__control"
@@ -125,7 +115,7 @@ const Authentication = () => {
             <label className="reg-form__label" htmlFor="password">Укажите пароль</label>
             <input
               value={formik.values.password}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
               className="reg-form__control"
@@ -140,7 +130,7 @@ const Authentication = () => {
             <label className="reg-form__label" htmlFor="confirmPassword">Повторите пароль</label>
             <input
               value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
               className="reg-form__control"

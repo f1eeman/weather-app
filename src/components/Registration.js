@@ -33,30 +33,23 @@ const Registration = () => {
     validationSchema: Yup.object().shape({
       login: Yup
         .string()
-        .min(4, 'Количество символов должно быть от 3 до 8')
-        .max(8, 'Количество символов должно быть от 3 до 8')
+        .min(4, 'Количество символов должно быть от 4 до 30')
+        .max(30, 'Количество символов должно быть от 4 до 30')
         .required('Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки')
-        .notOneOf(usersLogins, 'Логин уже занят')
-        .strict(true),
+        .notOneOf(usersLogins, 'Логин уже занят'),
       email: Yup
         .string()
         .email('Введите валидный email')
         .required('Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки')
-        .notOneOf(usersEmails, 'Указанная электронная почта зарегистрирована')
-        .strict(true),
+        .notOneOf(usersEmails, 'Указанная электронная почта зарегистрирована'),
       password: Yup
         .string()
         .min(8, 'Количество символов должно быть не меньше 8')
-        .required('Поле является обязательным к заполнению')
-        .trim('Не должно быть пробелов в начале и конце строки')
-        .strict(true),
+        .required('Поле является обязательным к заполнению'),
       confirmPassword: Yup
         .string()
         .oneOf([Yup.ref('password')], 'Пароли не совпадают')
-        .required('Поле является обязательным к заполнению')
-        .strict(true),
+        .required('Поле является обязательным к заполнению'),
     }),
     onSubmit: async (values, actions) => {
       const { login, password, email } = values;
@@ -77,22 +70,17 @@ const Registration = () => {
     },
   });
 
+  const handleChange = (e) => {
+    formik.handleChange(e);
+    const trimmedValue = (e.target.value || '').replace(/\s+/g, '');
+    formik.setFieldValue(e.target.name, trimmedValue);
+  };
+
   const renderButton = () => (
     <button type="submit" disabled={formik.isSubmitting}>
       {formik.isSubmitting ? <Spinner /> : 'Отправить'}
     </button>
   );
-
-  // const renderFeedBack = (fieldName) => {
-  //   console.log('REG', formik.errors);
-  //   return (
-  //     <>
-  //       {formik.errors[fieldName] && formik.touched[fieldName] && (
-  //         <div className="invalid-feedback">{formik.errors[fieldName]}</div>
-  //       )}
-  //     </>
-  //   );
-  // };
 
   const renderFeedBack = (fieldName) => (
     <>
@@ -111,7 +99,7 @@ const Registration = () => {
             <input
               ref={loginFieldRef}
               value={formik.values.login}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
               className="reg-form__control"
@@ -126,7 +114,7 @@ const Registration = () => {
             <label className="reg-form__label" htmlFor="email">Укажите свою электронную почту</label>
             <input
               value={formik.values.email}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
               className="reg-form__control"
@@ -141,7 +129,7 @@ const Registration = () => {
             <label className="reg-form__label" htmlFor="password">Придумайте пароль</label>
             <input
               value={formik.values.password}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
               className="reg-form__control"
@@ -156,7 +144,7 @@ const Registration = () => {
             <label className="reg-form__label" htmlFor="confirmPassword">Повторите пароль</label>
             <input
               value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               disabled={formik.isSubmitting}
               className="reg-form__control"
