@@ -9,13 +9,6 @@
   line-height: $line-height;
 }
 
-@mixin list-reset() {
-  margin: 0;
-  padding: 0;
-
-  list-style: none;
-}
-
 //Лечит проблему поведения svg элемента, как ссылки, при нажатии
 @mixin ie-bug-fix-svg() {
   position: relative;

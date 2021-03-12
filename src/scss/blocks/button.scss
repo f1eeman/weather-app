@@ -1,0 +1,23 @@
+.button {
+  height: 52px;
+  padding: 15px;
+
+  color: $secondary-color-text;
+  text-align: center;
+  text-transform: uppercase;
+
+  border: 2px solid $color-btn-border;
+
+  &:hover,
+  &:focus {
+    color: $color-text-btn-hover;
+
+    background-color: $color-btn-bg;
+  }
+
+  &:active {
+    color: $color-text-btn-active;
+
+    background-color: $color-btn-bg;
+  }
+}

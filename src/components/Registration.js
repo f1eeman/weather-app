@@ -48,6 +48,7 @@ const Registration = () => {
         .required('Поле является обязательным к заполнению'),
       confirmPassword: Yup
         .string()
+        .min(8, 'Количество символов должно быть не меньше 8')
         .oneOf([Yup.ref('password')], 'Пароли не совпадают')
         .required('Поле является обязательным к заполнению'),
     }),
@@ -77,7 +78,7 @@ const Registration = () => {
   };
 
   const renderButton = () => (
-    <button type="submit" disabled={formik.isSubmitting}>
+    <button type="submit" disabled={formik.isSubmitting} className="reg-form__button-submit button">
       {formik.isSubmitting ? <Spinner /> : 'Отправить'}
     </button>
   );
@@ -85,89 +86,98 @@ const Registration = () => {
   const renderFeedBack = (fieldName) => (
     <>
       {formik.errors[fieldName] && formik.touched[fieldName] && (
-        <div className="invalid-feedback">{formik.errors[fieldName]}</div>
+        <p className="reg-form__invalid-feedback">{formik.errors[fieldName]}</p>
       )}
     </>
   );
 
   return (
-    <>
-      <form className="reg-form" onSubmit={formik.handleSubmit}>
-        <ul className="reg-form__list" role="presentation">
-          <li className="reg-form__item">
-            <label className="reg-form__label" htmlFor="login">Придумайте логин</label>
-            <input
-              ref={loginFieldRef}
-              value={formik.values.login}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              disabled={formik.isSubmitting}
-              className="reg-form__control"
-              id="login"
-              name="login"
-              type="text"
-              placeholder="Логин"
-            />
-            {renderFeedBack('login')}
-          </li>
-          <li className="reg-form__item">
-            <label className="reg-form__label" htmlFor="email">Укажите свою электронную почту</label>
-            <input
-              value={formik.values.email}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              disabled={formik.isSubmitting}
-              className="reg-form__control"
-              id="email"
-              name="email"
-              type="email"
-              placeholder="Email"
-            />
-            {renderFeedBack('email')}
-          </li>
-          <li className="reg-form__item">
-            <label className="reg-form__label" htmlFor="password">Придумайте пароль</label>
-            <input
-              value={formik.values.password}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              disabled={formik.isSubmitting}
-              className="reg-form__control"
-              id="password"
-              name="password"
-              type="password"
-              placeholder="Пароль"
-            />
-            {renderFeedBack('password')}
-          </li>
-          <li className="reg-form__item">
-            <label className="reg-form__label" htmlFor="confirmPassword">Повторите пароль</label>
-            <input
-              value={formik.values.confirmPassword}
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              disabled={formik.isSubmitting}
-              className="reg-form__control"
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              placeholder="Пароль"
-            />
-            {renderFeedBack('confirmPassword')}
-          </li>
-        </ul>
-        {renderButton()}
-      </form>
-      <div className="">
-        <p className="">Если вы уже зарегистрированы, войдите в систему</p>
-        <NavLink
-          isActive={() => !formik.isSubmitting}
-          to="/auth"
-        >
-          Войти
-        </NavLink>
-      </div>
-    </>
+    <main className="page-main">
+      <h1 className="visually-hidden">Страница регистрации пользователя</h1>
+      <section className="page-main__registration registration">
+        <div className="registration__container">
+          <h2 className="registration__title">Форма регистрации</h2>
+          <form className="registration__reg-form reg-form" onSubmit={formik.handleSubmit}>
+            <ul className="reg-form__list" role="presentation">
+              <li className="reg-form__item">
+                <label className="reg-form__label" htmlFor="login">Придумайте логин</label>
+                <input
+                  ref={loginFieldRef}
+                  value={formik.values.login}
+                  onChange={handleChange}
+                  onBlur={formik.handleBlur}
+                  disabled={formik.isSubmitting}
+                  className="reg-form__control"
+                  id="login"
+                  name="login"
+                  type="text"
+                  placeholder="superman"
+                />
+                {renderFeedBack('login')}
+              </li>
+              <li className="reg-form__item">
+                <label className="reg-form__label" htmlFor="email">Укажите свою электронную почту</label>
+                <input
+                  value={formik.values.email}
+                  onChange={handleChange}
+                  onBlur={formik.handleBlur}
+                  disabled={formik.isSubmitting}
+                  className="reg-form__control"
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="batman_must_die@smile.com"
+                />
+                {renderFeedBack('email')}
+              </li>
+              <li className="reg-form__item">
+                <label className="reg-form__label" htmlFor="password">Придумайте пароль</label>
+                <input
+                  value={formik.values.password}
+                  onChange={handleChange}
+                  onBlur={formik.handleBlur}
+                  disabled={formik.isSubmitting}
+                  className="reg-form__control"
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="********"
+                />
+                {renderFeedBack('password')}
+              </li>
+              <li className="reg-form__item">
+                <label className="reg-form__label" htmlFor="confirmPassword">Повторите пароль</label>
+                <input
+                  value={formik.values.confirmPassword}
+                  onChange={handleChange}
+                  onBlur={formik.handleBlur}
+                  disabled={formik.isSubmitting}
+                  className="reg-form__control"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="********"
+                />
+                {renderFeedBack('confirmPassword')}
+              </li>
+            </ul>
+            <div className="reg-form__wrapper">
+              {renderButton()}
+              <p className="reg-form__info">*Все поля обязательны для заполнения</p>
+            </div>
+          </form>
+          <div className="registration__entry entry">
+            <p className="entry__text">*Если вы уже зарегистрированы, войдите в систему</p>
+            <NavLink
+              className="entry__link button"
+              to="/auth"
+            >
+              Войти
+            </NavLink>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 };
 
