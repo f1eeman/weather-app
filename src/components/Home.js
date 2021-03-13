@@ -108,7 +108,7 @@ const Home = () => {
                     id="city-name"
                     name="body"
                     type="text"
-                    placeholder="Введите название города..."
+                    placeholder="НОВОСИБИРСК"
                   />
                   {renderFeedBack()}
                 </div>

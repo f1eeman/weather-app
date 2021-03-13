@@ -12,10 +12,6 @@ body {
   @include style-text();
 }
 
-img {
-  @include init-size-img();
-}
-
 a {
   text-decoration: none;
 }
