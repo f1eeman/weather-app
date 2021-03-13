@@ -73,8 +73,8 @@ const Home = () => {
   };
 
   const renderButton = () => (
-    <button type="submit" disabled={formik.isSubmitting}>
-      {formik.isSubmitting ? <Spinner /> : 'Отправить'}
+    <button className="search-form__button-submit button" type="submit" disabled={formik.isSubmitting}>
+      {formik.isSubmitting ? <Spinner /> : 'Найти'}
     </button>
   );
 
@@ -99,12 +99,12 @@ const Home = () => {
                 <div className="search-form__input-wrapper">
                   <label className="visually-hidden" htmlFor="city-name">Укажите название города</label>
                   <input
+                    className="search-form__control"
                     ref={inputRef}
                     value={formik.values.body}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled={formik.isSubmitting}
-                    className="search-form__control"
                     id="city-name"
                     name="body"
                     type="text"
