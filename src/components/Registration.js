@@ -95,7 +95,7 @@ const Registration = () => {
     <main className="page-main">
       <h1 className="visually-hidden">Страница регистрации пользователя</h1>
       <section className="page-main__registration registration">
-        <div className="container">
+        <div className="container container--shadow">
           <h2 className="registration__title">Регистрация</h2>
           <form className="registration__form form" onSubmit={formik.handleSubmit}>
             <ul className="form__list" role="presentation">

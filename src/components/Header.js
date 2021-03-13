@@ -22,9 +22,13 @@ const Header = () => {
   };
   return (
     <header className="page-header">
-      <div className="page-header__wrapper">
+      <div className="container">
+        <img
+          className="page-header__logo"
+          src={Logo}
+          alt="Логотип сервиса прогноза погоды"
+        />
         <div className="page-header__user-menu user-menu">
-          <img src={Logo} alt="Логотип сервиса прогноза погоды" />
           <ul className="user-menu__list">
             <li className="user-menu__item">{currentUser.login}</li>
             <li className="user-menu__item">{currentUser.email}</li>

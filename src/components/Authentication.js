@@ -97,7 +97,7 @@ const Authentication = () => {
     <main className="page-main">
       <h1 className="visually-hidden">Страница регистрации пользователя</h1>
       <section className="page-main__authentication authentication">
-        <div className="container">
+        <div className="container container--shadow">
           <h2 className="authentication__title">Вход</h2>
           <form className="authentication__form form" onSubmit={formik.handleSubmit}>
             <ul className="form__list" role="presentation">

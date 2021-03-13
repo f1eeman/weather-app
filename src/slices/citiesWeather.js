@@ -57,6 +57,15 @@ const citiesWeatherSlice = createSlice({
         error: null,
       };
     },
+    removeCityWeather(state, { payload: { id } }) {
+      const { weatherInfoList } = state;
+      const filteredWeatherInfoList = weatherInfoList.filter(
+        (cityWeather) => cityWeather.id !== id,
+      );
+      return {
+        ...state, weatherInfoList: filteredWeatherInfoList,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(getCityWeatherInfo.fulfilled, (state, { payload: { weatherInfo } }) => {
@@ -74,6 +83,6 @@ const citiesWeatherSlice = createSlice({
 
 export { getCityWeatherInfo };
 
-export const { resetAllCitiesWeaherInfo } = citiesWeatherSlice.actions;
+export const { resetAllCitiesWeaherInfo, removeCityWeather } = citiesWeatherSlice.actions;
 
 export default citiesWeatherSlice.reducer;

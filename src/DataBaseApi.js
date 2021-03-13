@@ -6,7 +6,6 @@ class DataBaseApi {
   }
 
   isInit() {
-    // console.log(this.dataBase.length);
     const rawData = this.dataBase.getItem('isDataBaseInit');
     // console.log('DATABASEAPI rawData', rawData);
     const isDataBaseInit = parse('json', rawData);
@@ -63,6 +62,24 @@ class DataBaseApi {
     allUsers.forEach((user) => {
       if (user.login === currentUser.login) {
         user.favoriteCities.push(city);
+      }
+    });
+    const preparedDataForWriting1 = parse('object', currentUser);
+    const preparedDataForWriting2 = parse('object', allUsers);
+    this.dataBase.setItem('currentUser', preparedDataForWriting1);
+    this.dataBase.setItem('users', preparedDataForWriting2);
+  }
+
+  removeUserFavoriteCity(id) {
+    const rawData = this.dataBase.getItem('currentUser');
+    const allUsers = this.getAllUsers();
+    const currentUser = parse('json', rawData);
+    const filteredFavoriteCities = currentUser.favoriteCities.filter((city) => city.id !== id);
+    currentUser.favoriteCities = filteredFavoriteCities;
+    allUsers.forEach((user) => {
+      if (user.login === currentUser.login) {
+        // eslint-disable-next-line no-param-reassign
+        user.favoriteCities = filteredFavoriteCities;
       }
     });
     const preparedDataForWriting1 = parse('object', currentUser);

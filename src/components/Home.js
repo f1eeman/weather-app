@@ -43,12 +43,13 @@ const Home = () => {
     }),
     onSubmit: async (values, actions) => {
       const { body } = values;
-      const city = { cityName: body, removable: true };
       const resultAction = await dispatch(
         slicesActions.getCityWeatherInfo({ cityName: body, removable: true }),
       );
       actions.resetForm();
       if (slicesActions.getCityWeatherInfo.fulfilled.match(resultAction)) {
+        const { payload: { weatherInfo: { id } } } = resultAction;
+        const city = { cityName: body, removable: true, id };
         storage.addUserFavoriteCity(city);
         dispatch(slicesActions.addCity({ city }));
       } else if (resultAction.payload) {

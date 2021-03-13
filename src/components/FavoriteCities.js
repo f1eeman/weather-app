@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import storage from '../storage.js';
 import { actions as slicesActions } from '../slices/index.js';
 import getDefaultCities from '../defaultCities.js';
 
@@ -14,6 +15,7 @@ const FavoriteCities = () => {
   ));
   const defaultCities = getDefaultCities();
   const commonCities = [...defaultCities, ...currentUserCities];
+  console.log('commonCities', commonCities);
 
   useEffect(() => {
     const fetchData = () => {
@@ -28,7 +30,9 @@ const FavoriteCities = () => {
   }, []);
 
   const handleRemoveFromFavorite = (id) => () => {
-    console.log('sadasd');
+    storage.removeUserFavoriteCity(id);
+    dispatch(slicesActions.removeCity({ id }));
+    dispatch(slicesActions.removeCityWeather({ id }));
   };
 
   const renderRemoveButton = (id) => (
@@ -87,7 +91,9 @@ const FavoriteCities = () => {
   return (
     <section className="page-main__favorite-cities favorite-cities slider">
       <h2 className="visually-hidden">Избранные города</h2>
-      {renderCitiesWeatherList()}
+      <div className="container">
+        {renderCitiesWeatherList()}
+      </div>
     </section>
   );
 };
