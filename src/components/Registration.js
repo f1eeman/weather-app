@@ -60,7 +60,7 @@ const Registration = () => {
       };
       // console.log('userInfo', userInfo);
       try {
-        await storage.addUser(userInfo);
+        storage.addUser(userInfo);
         dispatch(slicesActions.addUser({ user: omit(userInfo, 'password') }));
         history.push('/auth');
       } catch (e) {
@@ -78,7 +78,7 @@ const Registration = () => {
   };
 
   const renderButton = () => (
-    <button type="submit" disabled={formik.isSubmitting} className="reg-form__button-submit button">
+    <button type="submit" disabled={formik.isSubmitting} className="form__button-submit button">
       {formik.isSubmitting ? <Spinner /> : 'Отправить'}
     </button>
   );
@@ -86,7 +86,7 @@ const Registration = () => {
   const renderFeedBack = (fieldName) => (
     <>
       {formik.errors[fieldName] && formik.touched[fieldName] && (
-        <p className="reg-form__invalid-feedback">{formik.errors[fieldName]}</p>
+        <p className="form__invalid-feedback">{formik.errors[fieldName]}</p>
       )}
     </>
   );
@@ -95,19 +95,19 @@ const Registration = () => {
     <main className="page-main">
       <h1 className="visually-hidden">Страница регистрации пользователя</h1>
       <section className="page-main__registration registration">
-        <div className="registration__container">
-          <h2 className="registration__title">Форма регистрации</h2>
-          <form className="registration__reg-form reg-form" onSubmit={formik.handleSubmit}>
-            <ul className="reg-form__list" role="presentation">
-              <li className="reg-form__item">
-                <label className="reg-form__label" htmlFor="login">Придумайте логин</label>
+        <div className="container">
+          <h2 className="registration__title">Регистрация</h2>
+          <form className="registration__form form" onSubmit={formik.handleSubmit}>
+            <ul className="form__list" role="presentation">
+              <li className="form__item">
+                <label className="form__label" htmlFor="login">Придумайте логин</label>
                 <input
                   ref={loginFieldRef}
                   value={formik.values.login}
                   onChange={handleChange}
                   onBlur={formik.handleBlur}
                   disabled={formik.isSubmitting}
-                  className="reg-form__control"
+                  className="form__control"
                   id="login"
                   name="login"
                   type="text"
@@ -115,29 +115,29 @@ const Registration = () => {
                 />
                 {renderFeedBack('login')}
               </li>
-              <li className="reg-form__item">
-                <label className="reg-form__label" htmlFor="email">Укажите свою электронную почту</label>
+              <li className="form__item">
+                <label className="form__label" htmlFor="email">Укажите свою электронную почту</label>
                 <input
                   value={formik.values.email}
                   onChange={handleChange}
                   onBlur={formik.handleBlur}
                   disabled={formik.isSubmitting}
-                  className="reg-form__control"
+                  className="form__control"
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="batman_must_die@smile.com"
+                  placeholder="batman_must_die@dc.com"
                 />
                 {renderFeedBack('email')}
               </li>
-              <li className="reg-form__item">
-                <label className="reg-form__label" htmlFor="password">Придумайте пароль</label>
+              <li className="form__item">
+                <label className="form__label" htmlFor="password">Придумайте пароль</label>
                 <input
                   value={formik.values.password}
                   onChange={handleChange}
                   onBlur={formik.handleBlur}
                   disabled={formik.isSubmitting}
-                  className="reg-form__control"
+                  className="form__control"
                   id="password"
                   name="password"
                   type="password"
@@ -145,14 +145,14 @@ const Registration = () => {
                 />
                 {renderFeedBack('password')}
               </li>
-              <li className="reg-form__item">
-                <label className="reg-form__label" htmlFor="confirmPassword">Повторите пароль</label>
+              <li className="form__item">
+                <label className="form__label" htmlFor="confirmPassword">Повторите пароль</label>
                 <input
                   value={formik.values.confirmPassword}
                   onChange={handleChange}
                   onBlur={formik.handleBlur}
                   disabled={formik.isSubmitting}
-                  className="reg-form__control"
+                  className="form__control"
                   id="confirmPassword"
                   name="confirmPassword"
                   type="password"
@@ -161,9 +161,9 @@ const Registration = () => {
                 {renderFeedBack('confirmPassword')}
               </li>
             </ul>
-            <div className="reg-form__wrapper">
+            <div className="form__wrapper">
               {renderButton()}
-              <p className="reg-form__info">*Все поля обязательны для заполнения</p>
+              <p className="form__info">*Все поля обязательны для заполнения</p>
             </div>
           </form>
           <div className="registration__entry entry">

@@ -1,5 +1,5 @@
 .button {
-  height: 52px;
+  min-height: 52px;
   padding: 15px;
 
   color: $secondary-color-text;
@@ -13,6 +13,7 @@
     color: $color-text-btn-hover;
 
     background-color: $color-btn-bg;
+    outline: none;
   }
 
   &:active {

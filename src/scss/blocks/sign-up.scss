@@ -1,14 +1,14 @@
-.entry {
+.sign-up {
   padding-top: 20px;
   padding-bottom: 40px;
 }
 
-.entry__text {
+.sign-up__text {
   color: $info-color-text;
   text-align: center;
 }
 
-.entry__link {
+.sign-up__link {
   display: block;
   width: 100%;
 
@@ -17,23 +17,31 @@
   background-color: transparent;
 }
 
+.sign-up__br {
+  display: none;
+}
+
 @media (min-width: $tablet-width) {
 
-  .entry {
+  .sign-up {
     display: flex;
     justify-content: space-between;
     padding-top: 50px;
   }
 
-  .entry__text {
-    width: 300px;
+  .sign-up__text {
+    width: 500px;
     margin: 0;
 
     text-align: right;
   }
 
-  .entry__link {
+  .sign-up__link {
     order: -1;
-    width: 200px;
+    width: 300px;
+  }
+
+  .sign-up__br {
+    display: inline;
   }
 }

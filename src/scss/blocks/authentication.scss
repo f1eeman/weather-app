@@ -1,10 +1,10 @@
-.registration__form {
+.authentication__form {
   padding-bottom: 50px;
 
   border-bottom: 4px solid $color-separator-border;
 }
 
-.registration__title {
+.authentication__title {
   margin: 0;
   padding-top: 29px;
   padding-bottom: 36px;
@@ -17,7 +17,7 @@
 
 @media (min-width: $tablet-width) {
 
-  .registration__title {
+  .authentication__title {
     padding-top: 45px;
     padding-bottom: 60px;
 
