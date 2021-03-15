@@ -1,0 +1,30 @@
+.city-info {
+  min-height: 370px;
+  padding: 10px;
+
+  background-image: linear-gradient(#c6e4ee 0%, #c6e4ee 40%, #fed1ae 60%, #faa0b9 70%, #cb7dcb 80%, #757ecb 100%);
+
+  border-radius: 5px;
+}
+
+.city-info__table {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.city-info__key {
+  flex-basis: 50%;
+  padding: 10px;
+}
+
+.city-info__value {
+  flex-basis: 50%;
+  margin-left: 0;
+  padding: 10px;
+
+  text-align: right;
+}
+
+.city-info__title {
+  text-align: center;
+}

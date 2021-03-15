@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import storage from '../storage.js';
 // import routes from '../../routes.js';
 import { actions as slicesActions } from '../slices/index.js';
-import FavoriteCities from './FavoriteCities.js';
+import FavoriteCities from './FavoriteCitiesSlider.js';
 import Header from './Header.js';
 import Spinner from './Spinner.js';
 import getDefaultCities from '../defaultCities.js';

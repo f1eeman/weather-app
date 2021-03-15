@@ -6,6 +6,7 @@
   text-align: center;
   text-transform: uppercase;
 
+  background-color: transparent;
   border: 2px solid $color-btn-border;
 
   cursor: pointer;
@@ -15,7 +16,6 @@
     color: $color-text-btn-hover;
 
     background-color: $color-btn-bg;
-    outline: none;
   }
 
   &:active {

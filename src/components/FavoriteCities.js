@@ -15,7 +15,7 @@ const FavoriteCities = () => {
   ));
   const defaultCities = getDefaultCities();
   const commonCities = [...defaultCities, ...currentUserCities];
-  console.log('commonCities', commonCities);
+  // console.log('commonCities', commonCities);
 
   useEffect(() => {
     const fetchData = () => {
