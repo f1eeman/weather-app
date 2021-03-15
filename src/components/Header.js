@@ -1,16 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-// import axios from 'axios';
-// import routes from '../../routes.js';
-// import { actions as slicesActions } from '../../slices';
-// import Spinner from './Spinner.js';
 import { actions as slicesActions } from '../slices/index.js';
 import storage from '../storage.js';
 import Logo from '../assets/img/logo.png';
 
 const Header = () => {
-  // console.log('Header Comp');
   const currentUser = useSelector((state) => state.usersInfo.currentUser);
   const history = useHistory();
   const dispatch = useDispatch();

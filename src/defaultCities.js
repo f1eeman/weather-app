@@ -5,4 +5,5 @@ const getCities = () => [
   { cityName: 'Нью-Йорк', removable: false },
   { cityName: 'Пекин', removable: false },
 ];
+
 export default getCities;

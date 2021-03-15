@@ -52,14 +52,7 @@ const usersInfoSlice = createSlice({
     removeCity(state, { payload: { id } }) {
       const { currentUser } = state;
       const { favoriteCities } = currentUser;
-      console.log('currentUser', currentUser);
-      const filteredFavoriteCities = favoriteCities.filter((city) => {
-        console.log('city', city);
-        console.log('city.id !== id', city.id !== id);
-        console.log('city.id', city.id);
-        console.log('remove id', id);
-        return city.id !== id;
-      });
+      const filteredFavoriteCities = favoriteCities.filter((city) => city.id !== id);
       return {
         ...state, currentUser: { ...currentUser, favoriteCities: filteredFavoriteCities },
       };

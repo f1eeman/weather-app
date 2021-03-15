@@ -3,15 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import storage from '../storage.js';
-// import routes from '../../routes.js';
 import { actions as slicesActions } from '../slices/index.js';
-import FavoriteCities from './FavoriteCitiesSlider.js';
+import FavoriteCities from './FavoriteCities.js';
 import Header from './Header.js';
 import Spinner from './Spinner.js';
 import getDefaultCities from '../defaultCities.js';
 
 const Home = () => {
-  // console.log('Home Comp');
   const { currentUserCities } = useSelector((state) => (
     { currentUserCities: state.usersInfo.currentUser.favoriteCities }
   ));

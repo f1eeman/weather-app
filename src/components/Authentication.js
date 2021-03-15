@@ -8,7 +8,6 @@ import Spinner from './Spinner.js';
 import { actions as slicesActions } from '../slices/index.js';
 
 const Authentication = () => {
-  console.log('Authentication Comp');
   const { usersLogins } = useSelector((state) => (
     {
       usersLogins: state.usersInfo.users.map(({ login }) => login),
@@ -53,7 +52,6 @@ const Authentication = () => {
         if (currentUser.password !== password) {
           throw new Error('Неверно указан пароль');
         }
-        // console.log('AUTH SUBMIT', currentUser);
         storage.setCurrentUser({ ...currentUser, isLoggedIn: true });
         dispatch(slicesActions.setLogin({ login: currentUser.login }));
         dispatch(slicesActions.setEmail({ email: currentUser.email }));
@@ -62,7 +60,6 @@ const Authentication = () => {
         history.push('/');
       } catch (e) {
         // куда вписывать ошибки
-        console.log('e', e);
         if (e.message === 'Неверно указан пароль') {
           actions.setErrors({ password: e.message });
         } else {

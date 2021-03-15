@@ -1,6 +1,3 @@
-// const apiKey = '517bf968ada0e1ffab311d567fe82005';
-// const units = 'metric';
-// const lang = 'ru';
 const params = {
   appid: '517bf968ada0e1ffab311d567fe82005',
   units: 'metric',

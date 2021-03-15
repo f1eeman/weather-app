@@ -9,7 +9,6 @@ import Spinner from './Spinner.js';
 import { actions as slicesActions } from '../slices/index.js';
 
 const Registration = () => {
-  console.log('Registration Comp');
   const { usersLogins, usersEmails } = useSelector((state) => (
     {
       usersLogins: state.usersInfo.users.map(({ login }) => login),
@@ -58,7 +57,6 @@ const Registration = () => {
       const userInfo = {
         id, login, password, email, favoriteCities: [], isLoggedIn: false,
       };
-      // console.log('userInfo', userInfo);
       try {
         storage.addUser(userInfo);
         dispatch(slicesActions.addUser({ user: omit(userInfo, 'password') }));
