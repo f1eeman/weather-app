@@ -62,7 +62,6 @@ const Registration = () => {
         dispatch(slicesActions.addUser({ user: omit(userInfo, 'password') }));
         history.push('/auth');
       } catch (e) {
-        // куда вписывать ошибки
         actions.setErrors({ login: 'Упс, что-то пошло не так! Попробуйте снова.' });
         throw e;
       }

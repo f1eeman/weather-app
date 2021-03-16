@@ -17,7 +17,6 @@ const config = {
   output: {
     filename: 'main.js',
     path: path.join(__dirname, 'dist'),
-    // assetModuleFilename: 'assets/[name][hash][ext]',
   },
   devtool: 'eval',
   devServer: {

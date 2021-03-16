@@ -59,7 +59,6 @@ const Authentication = () => {
         dispatch(slicesActions.changeLoggingStatus({ isLoggedIn: true }));
         history.push('/');
       } catch (e) {
-        // куда вписывать ошибки
         if (e.message === 'Неверно указан пароль') {
           actions.setErrors({ password: e.message });
         } else {
