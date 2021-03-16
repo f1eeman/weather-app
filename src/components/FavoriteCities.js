@@ -9,13 +9,22 @@ import getDefaultCities from '../defaultCities.js';
 import getItemsCount from '../itemsCount.js';
 
 const FavoriteCities = () => {
-  const { currentUserCities, citiesWheaterInfoList } = useSelector((state) => (
+  const {
+    currentUserCities,
+    citiesWheaterInfoList,
+    gettingWeatherStatus,
+  } = useSelector((state) => (
     {
       currentUserCities: state.usersInfo.currentUser.favoriteCities,
       citiesWheaterInfoList: state.citiesWeather.weatherInfoList,
+      gettingWeatherStatus: state.citiesWeather.gettingStatus,
     }
   ));
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [animationClasses, setAnimationClasses] = useState({
+    'slider__item--show-to-left': false,
+    'slider__item--show-to-right': false,
+  });
   const size = useWindowSize();
   const slideElementsCount = getItemsCount(size.width);
   const chunkedCitiesWheaterList = chunk(citiesWheaterInfoList, slideElementsCount);
@@ -38,11 +47,19 @@ const FavoriteCities = () => {
   }, []);
 
   const handleShowSpecificSlide = (slideIndex) => () => {
+    setAnimationClasses({
+      'slider__item--show-to-left': false,
+      'slider__item--show-to-right': false,
+    });
     setCurrentIdx(slideIndex);
   };
 
   const handleShowNextSlide = () => {
     const nextIdx = ((currentIdx + 1) % slidesCount);
+    setAnimationClasses({
+      'slider__item--show-to-left': false,
+      'slider__item--show-to-right': true,
+    });
     setCurrentIdx(nextIdx);
   };
 
@@ -50,6 +67,10 @@ const FavoriteCities = () => {
     const prevIdx = (
       (currentIdx + (slideElementsCount - 1)) % slidesCount
     );
+    setAnimationClasses({
+      'slider__item--show-to-left': true,
+      'slider__item--show-to-right': false,
+    });
     setCurrentIdx(prevIdx);
   };
 
@@ -137,6 +158,7 @@ const FavoriteCities = () => {
         const classes = cn({
           slider__item: true,
           'slider__item--active': currentIdx === index,
+          ...animationClasses,
         });
         return (
           <li key={uniqueId()} className={classes}>
@@ -176,6 +198,12 @@ const FavoriteCities = () => {
     </>
   );
 
+  const renderIndicator = () => (
+    <div className="indicator">
+      <p className="indicator__text">Идет загрузка данных. Подождите...</p>
+    </div>
+  );
+
   return (
     <section className="page-main__favorite-cities favorite-cities slider">
       <h2 className="visually-hidden">Избранные города</h2>
@@ -190,7 +218,7 @@ const FavoriteCities = () => {
             </div>
           </div>
           <div className="slider__wrapper-list">
-            {renderSliderList()}
+            {gettingWeatherStatus === 'processing' ? renderIndicator() : renderSliderList()}
           </div>
         </div>
       </div>

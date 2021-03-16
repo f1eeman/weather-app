@@ -49,12 +49,14 @@ const citiesWeatherSlice = createSlice({
   initialState: {
     weatherInfoList: [],
     error: null,
+    gettingStatus: 'idle',
   },
   reducers: {
     resetAllCitiesWeaherInfo() {
       return {
         weatherInfoList: [],
         error: null,
+        gettingStatus: 'idle',
       };
     },
     removeCityWeather(state, { payload: { id } }) {
@@ -68,8 +70,12 @@ const citiesWeatherSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(getCityWeatherInfo.pending, (state) => {
+      state.gettingStatus = 'processing';
+    });
     builder.addCase(getCityWeatherInfo.fulfilled, (state, { payload: { weatherInfo } }) => {
       state.weatherInfoList.push(weatherInfo);
+      state.gettingStatus = 'finished';
     });
     builder.addCase(getCityWeatherInfo.rejected, (state, action) => {
       if (action.payload) {
@@ -77,6 +83,7 @@ const citiesWeatherSlice = createSlice({
       } else {
         state.error = action.error.message;
       }
+      state.gettingStatus = 'failed';
     });
   },
 });
